@@ -1,32 +1,31 @@
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Windows;
 using UnityEngine.InputSystem;
+using UnityEngine.Windows;
 
 public class movement : MonoBehaviour
 {
-    private Vector3 Velocity;
     private Vector3 PlayerMovementInput;
-    private bool Sneaking = false;
     private Rigidbody rb;
+    private float distance = 5f;
 
 
     [Header("Components Needed")]
-    [SerializeField] private Transform PlayerCamera;
-    [SerializeField] private CharacterController Controller;
     [SerializeField] private Transform Player;
     [SerializeField] private InputActionReference moveAction;
+    [SerializeField] private Transform Camera;
     [Space]
     [Header("Movement")]
     [SerializeField] private float Speed;
-    private float currentSpeed;
-    [SerializeField] private float JumpForce;
-    [SerializeField] private float Gravity = 9.81f;
+    [SerializeField]private float currentSpeed;
     [Space]
     [Header("Sneaking")]
     [SerializeField] private bool Sneak = false;
     [SerializeField] private float SneakSpeed;
-
-    private bool isGrounded;
+    [Space]
+    [Header("Jumping")]
+    [SerializeField] private float JumpForce;
+    [SerializeField] private bool isGrounded;
 
 
 
@@ -35,21 +34,12 @@ public class movement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
         currentSpeed = Speed;
-        Velocity.y = -1f;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-
-
     }
 
     private void FixedUpdate()
     {
-        PlayerMovementInput = new Vector3(moveAction.action.ReadValue<Vector2>().x, 0, moveAction.action.ReadValue<Vector2>().y);
-        rb.MovePosition(transform.position + PlayerMovementInput * Time.fixedDeltaTime * currentSpeed);
+        Move();
+        transform.position = transform.position + Camera.transform.forward * distance * Time.deltaTime;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -58,6 +48,12 @@ public class movement : MonoBehaviour
         {
             isGrounded = true;
         }
+    }
+
+    private void Move()
+    {
+        PlayerMovementInput = new Vector3(moveAction.action.ReadValue<Vector2>().x, 0, moveAction.action.ReadValue<Vector2>().y);
+        rb.MovePosition(transform.position + PlayerMovementInput * Time.fixedDeltaTime * currentSpeed);
     }
 
     public void Sneakmode()
@@ -79,15 +75,11 @@ public class movement : MonoBehaviour
  
 
     public void Jumping()
-    { 
+    {
         if (isGrounded && !Sneak)
         {
-            Velocity.y = JumpForce;
+            rb.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
+            isGrounded = false;
         }
-        else
-        {
-            Velocity.y += Gravity * -2f * Time.deltaTime;
-        }
-    
     }
 }
