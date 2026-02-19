@@ -7,7 +7,6 @@ public class movement : MonoBehaviour
 {
     private Vector3 PlayerMovementInput;
     private Rigidbody rb;
-    private float distance = 5f;
 
 
     [Header("Components Needed")]
@@ -17,7 +16,7 @@ public class movement : MonoBehaviour
     [Space]
     [Header("Movement")]
     [SerializeField] private float Speed;
-    [SerializeField]private float currentSpeed;
+    [SerializeField] private float currentSpeed;
     [Space]
     [Header("Sneaking")]
     [SerializeField] private bool Sneak = false;
@@ -25,7 +24,12 @@ public class movement : MonoBehaviour
     [Space]
     [Header("Jumping")]
     [SerializeField] private float JumpForce;
+    [SerializeField] private float jumpCount;
     [SerializeField] private bool isGrounded;
+    [Space]
+    [Header("Running")]
+    [SerializeField] private bool Run = false;
+    [SerializeField] private float RunSpeed;
 
 
 
@@ -39,21 +43,25 @@ public class movement : MonoBehaviour
     private void FixedUpdate()
     {
         Move();
-        transform.position = transform.position + Camera.transform.forward * distance * Time.deltaTime;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("land"))
-        {
             isGrounded = true;
-        }
+            jumpCount = 0;
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        isGrounded = false;
     }
 
     private void Move()
     {
-        PlayerMovementInput = new Vector3(moveAction.action.ReadValue<Vector2>().x, 0, moveAction.action.ReadValue<Vector2>().y);
-        rb.MovePosition(transform.position + PlayerMovementInput * Time.fixedDeltaTime * currentSpeed);
+        Vector3 movement = Camera.forward * moveAction.action.ReadValue<Vector2>().y + Camera.right * moveAction.action.ReadValue<Vector2>().x;
+        movement.y = 0f; // Ensure movement is only on the horizontal plane
+        PlayerMovementInput = movement;
+        rb.MovePosition(transform.position + PlayerMovementInput * (Time.fixedDeltaTime * currentSpeed));
     }
 
     public void Sneakmode()
@@ -72,14 +80,38 @@ public class movement : MonoBehaviour
         }
     }
 
- 
+    public void Runmode()
+    {
+        if (!Run)
+        {
+            currentSpeed = RunSpeed;
+            Run = true;
+        }
+        else if (Run)
+        {
+            currentSpeed = Speed;
+            Run = false;
+        }
+    }
+
+
 
     public void Jumping()
     {
         if (isGrounded && !Sneak)
         {
-            rb.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
-            isGrounded = false;
+            jump();
         }
+
+        else if (!isGrounded && !Sneak && jumpCount < 1)
+        {
+            jump();
+        }
+    }
+
+    private void jump()
+    {
+        rb.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
+        jumpCount++;
     }
 }
