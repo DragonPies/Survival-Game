@@ -4,65 +4,34 @@ using System.Collections.Generic;
 
 public class objPickup : MonoBehaviour
 {
-    public GameObject crosshair1, crosshair2;
-    public Transform objTransform, cameraTrans;
-    public bool interactable, pickedUp;
-    public Rigidbody rb;
-    public float throwAmount;
 
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        { 
-            crosshair1.SetActive(false);
-            crosshair2.SetActive(true);
-            interactable = true;
-        }
-    }
+    [SerializeField] private Transform camtrans, grabPointTransform;
+    [SerializeField] private LayerMask pickUpLayer;
 
-    private void OnTriggerExit(Collider other)
+    private Grabable currentlyGrabbed;
+
+
+    private void Update()
     {
-        if (other.CompareTag("Player"))
+        if (Input.GetMouseButtonDown(0))
         {
-            crosshair1.SetActive(true);
-            crosshair2.SetActive(false);
-            interactable = false;
-        }
-    }
-    
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-
-        if (interactable)
-        {
-            if (Input.GetMouseButtonDown(0))
+            if (currentlyGrabbed == null)
             {
-                objTransform.parent = cameraTrans;
-                rb.useGravity = false;
-                pickedUp = true;
-            }
-            if (Input.GetMouseButtonUp(0))
-            {
-                objTransform.parent = null;
-                rb.useGravity = true;
-                pickedUp = false;
-            }
-            if (pickedUp)
-            {
-                if (Input.GetMouseButtonDown(1))
-                { 
-                    objTransform.parent = null;
-                    rb.useGravity = true;
-                    rb.linearVelocity = cameraTrans.forward * throwAmount * Time.deltaTime;
-                    pickedUp = false;
+                float pickupDistance = 3f;
+                if (Physics.Raycast(camtrans.position, camtrans.forward, out RaycastHit raycasthit, pickupDistance, pickUpLayer))
+                {
+                    Debug.Log("Hit: " + raycasthit.collider.gameObject.name);
+                    if (raycasthit.transform.TryGetComponent(out currentlyGrabbed))
+                    {
+                        currentlyGrabbed.Grab(grabPointTransform);
+                        Debug.Log("Grabbed: " + raycasthit.collider.gameObject.name);
+                    }
                 }
+            }
+            else
+            {
+                currentlyGrabbed.Drop();
+                currentlyGrabbed = null;
             }
         }
     }

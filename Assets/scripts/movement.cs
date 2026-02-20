@@ -114,4 +114,5 @@ public class movement : MonoBehaviour
         rb.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
         jumpCount++;
     }
+
 }
