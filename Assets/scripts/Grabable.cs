@@ -7,6 +7,7 @@ public class Grabable : MonoBehaviour
     private Rigidbody rb;
     private Transform grabPointTransform;
     public UI ui;
+    public bool isWinItem;
 
     private void Awake()
         {
@@ -29,7 +30,7 @@ public class Grabable : MonoBehaviour
     {
         if (grabPointTransform != null)
         {
-            float lerpSpeed = 10f;
+            float lerpSpeed = 7.5f;
             Vector3 newPosition = Vector3.Lerp(transform.position, grabPointTransform.position, Time.deltaTime * lerpSpeed);
             rb.MovePosition(newPosition);
         }
@@ -37,8 +38,7 @@ public class Grabable : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
-       CompareTag("Winplatform");
-        if (collision.gameObject.CompareTag("Winplatform"))
+        if (collision.gameObject.CompareTag("Winplatform") && isWinItem)
         {
             ui.winGame = true;
         }

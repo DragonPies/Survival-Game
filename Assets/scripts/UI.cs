@@ -6,6 +6,8 @@ public class UI : MonoBehaviour
 
     public GameObject winScreen;
 
+    public CameraScript cam;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -18,6 +20,9 @@ public class UI : MonoBehaviour
         if (winGame)
         {
             Debug.Log("You win!");
+            WinGame();
+            Cursor.lockState = CursorLockMode.None;
+            cam.isCameraOn = false;
         }
     }
 

@@ -16,13 +16,14 @@ public class movement : MonoBehaviour
     [Space]
     [Header("Movement")]
     [SerializeField] private float Speed;
-    [SerializeField] private float currentSpeed;
+    private float currentSpeed;
     [Space]
     [Header("Sneaking")]
     [SerializeField] private bool Sneak = false;
     [SerializeField] private float SneakSpeed;
     [Space]
     [Header("Jumping")]
+    [SerializeField] private float jumpSpeed;
     [SerializeField] private float JumpForce;
     [SerializeField] private float jumpCount;
     [SerializeField] private bool isGrounded;
@@ -36,7 +37,6 @@ public class movement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        Cursor.lockState = CursorLockMode.Locked;
         currentSpeed = Speed;
     }
 
@@ -46,7 +46,8 @@ public class movement : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision collision)
-    {
+    {       
+            currentSpeed = Speed;
             isGrounded = true;
             jumpCount = 0;
     }
@@ -101,6 +102,7 @@ public class movement : MonoBehaviour
         if (isGrounded && !Sneak)
         {
             jump();
+            currentSpeed = jumpSpeed;
         }
 
         else if (!isGrounded && !Sneak && jumpCount < 1)
