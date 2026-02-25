@@ -7,6 +7,7 @@ public class objPickup : MonoBehaviour
 
     [SerializeField] private Transform camtrans, grabPointTransform;
     [SerializeField] private LayerMask pickUpLayer;
+    [SerializeField] private LayerMask buttonlayer;
 
     [SerializeField] private float throwForce;
 
@@ -14,6 +15,11 @@ public class objPickup : MonoBehaviour
     public GameObject crosshair2;
 
     private Grabable currentlyGrabbed;
+
+    [Header("Gate Button Stuff")]
+    [SerializeField] private GameObject gate, button;
+    [SerializeField] private Material mat1, mat2;
+    private bool isOpen;
 
 
     private void Update()
@@ -72,5 +78,22 @@ public class objPickup : MonoBehaviour
         Vector3 velocity = (localx + localy) * throwForce;
 
         Gizmos.DrawLine(currentlyGrabbed.transform.position, currentlyGrabbed.transform.position + velocity);
+    }
+
+    public void Button()
+    {
+        float pickupDistance = 3f;
+            if (Physics.Raycast(camtrans.position, camtrans.forward, out RaycastHit raycasthit, pickupDistance, buttonlayer) && !isOpen)
+            {
+                gate.SetActive(false);
+                button.GetComponent<Renderer>().material = mat2;
+                isOpen = true;
+            }
+            else
+            {
+                gate.SetActive(true);
+                button.GetComponent<Renderer>().material = mat1;
+                isOpen = false;
+            }
     }
 }
