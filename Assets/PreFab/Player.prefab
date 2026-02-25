@@ -159,9 +159,9 @@ MonoBehaviour:
     type: 3}
   Camera: {fileID: 4259545079582784525}
   Speed: 5
-  currentSpeed: 0
   Sneak: 0
   SneakSpeed: 2.5
+  jumpSpeed: 3
   JumpForce: 5
   jumpCount: 0
   isGrounded: 0
@@ -359,9 +359,16 @@ MonoBehaviour:
   pickUpLayer:
     serializedVersion: 2
     m_Bits: 128
+  buttonlayer:
+    serializedVersion: 2
+    m_Bits: 0
   throwForce: 10
   crosshair1: {fileID: 0}
   crosshair2: {fileID: 0}
+  gate: {fileID: 0}
+  button: {fileID: 0}
+  mat1: {fileID: 0}
+  mat2: {fileID: 0}
 --- !u!1 &3814296831333394011
 GameObject:
   m_ObjectHideFlags: 0
