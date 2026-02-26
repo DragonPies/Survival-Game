@@ -1,11 +1,12 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
 
 public class objPickup : MonoBehaviour
 {
 
-    [SerializeField] private Transform camtrans, grabPointTransform;
+    [SerializeField] private Transform camtrans, grabPointTransform, grabPoint;
     [SerializeField] private LayerMask pickUpLayer;
     [SerializeField] private LayerMask buttonlayer;
 
@@ -20,6 +21,7 @@ public class objPickup : MonoBehaviour
     [SerializeField] private GameObject gate, button;
     [SerializeField] private Material mat1, mat2;
     private bool isOpen;
+    
 
 
     private void Update()
@@ -42,8 +44,11 @@ public class objPickup : MonoBehaviour
         }
     }
 
-    public void PickUp()
+    public void PickUp(InputAction.CallbackContext ctx)
     {
+        if (!ctx.performed)
+            return;
+
         if (currentlyGrabbed == null)
         {
             float pickupDistance = 3f;
@@ -58,31 +63,36 @@ public class objPickup : MonoBehaviour
             }
         }
         else
-        {
+        { 
             Grabable lastGrab = currentlyGrabbed;
             currentlyGrabbed.Drop();
-            currentlyGrabbed = null;
 
-            Vector3 localx = camtrans.GetComponent<CameraScript>().mouseDelta.x * camtrans.right;
-            Vector3 localy = camtrans.GetComponent<CameraScript>().mouseDelta.y * Vector3.up;
+            Vector3 localx = grabPoint.GetComponent<GrabPoint>().mouseDelta.x * camtrans.right;
+            Vector3 localy = grabPoint.GetComponent<GrabPoint>().mouseDelta.y * Vector3.up;
             Vector3 velocity = (localx + localy) * throwForce;
 
             lastGrab.GetComponent<Rigidbody>().linearVelocity = velocity;
+            currentlyGrabbed = null;
         }
     }
 
     private void OnDrawGizmos()
     {
-        Vector3 localx = camtrans.GetComponent<CameraScript>().mouseDelta.x * camtrans.right;
-        Vector3 localy = camtrans.GetComponent<CameraScript>().mouseDelta.y * Vector3.up;
+        Vector3 localx = grabPoint.GetComponent<GrabPoint>().mouseDelta.x * camtrans.right;
+        Vector3 localy = grabPoint.GetComponent<GrabPoint>().mouseDelta.y * Vector3.up;
         Vector3 velocity = (localx + localy) * throwForce;
 
-        Gizmos.DrawLine(currentlyGrabbed.transform.position, currentlyGrabbed.transform.position + velocity);
+        if (currentlyGrabbed)
+        {
+            Gizmos.DrawLine(currentlyGrabbed.transform.position, currentlyGrabbed.transform.position + velocity);
+        }
     }
 
-    public void Button()
+    public void Button(InputAction.CallbackContext ctx)
     {
         float pickupDistance = 3f;
+        if (!ctx.performed)
+            return;
             if (Physics.Raycast(camtrans.position, camtrans.forward, out RaycastHit raycasthit, pickupDistance, buttonlayer) && !isOpen)
             {
                 gate.SetActive(false);

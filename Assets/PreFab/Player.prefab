@@ -162,7 +162,7 @@ MonoBehaviour:
   Sneak: 0
   SneakSpeed: 2.5
   jumpSpeed: 3
-  JumpForce: 5
+  JumpForce: 10
   jumpCount: 0
   isGrounded: 0
   Run: 0
@@ -356,13 +356,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camtrans: {fileID: 4259545079582784525}
   grabPointTransform: {fileID: 5663079815105365140}
+  grabPoint: {fileID: 0}
   pickUpLayer:
     serializedVersion: 2
     m_Bits: 128
   buttonlayer:
     serializedVersion: 2
-    m_Bits: 0
-  throwForce: 10
+    m_Bits: 256
+  throwForce: 20
   crosshair1: {fileID: 0}
   crosshair2: {fileID: 0}
   gate: {fileID: 0}
@@ -552,6 +553,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isCameraOn: 1
-  mouseDelta: {x: 0, y: 0}
-  SmoothTime: 10
   Sensetivity: 5

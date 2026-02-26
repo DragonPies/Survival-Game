@@ -65,13 +65,25 @@ public class movement : MonoBehaviour
         rb.MovePosition(transform.position + PlayerMovementInput * (Time.fixedDeltaTime * currentSpeed));
     }
 
-    public void Sneakmode()
+    public void Sneakmode(InputAction.CallbackContext ctx)
     {
+        if (!ctx.performed)
+            return;
+
         if (!Sneak)
-        {   
-            currentSpeed = SneakSpeed;
+        {
+            if (Run)
+            {
+                Slide();
             Player.localScale = new Vector3(1f, 0.5f, 1f);
             Sneak = true;
+            }
+            else
+                    {
+                currentSpeed = SneakSpeed;
+                Player.localScale = new Vector3(1f, 0.5f, 1f);
+                Sneak = true;
+            }
         }
         else if (Sneak)
         {   
@@ -81,8 +93,11 @@ public class movement : MonoBehaviour
         }
     }
 
-    public void Runmode()
+    public void Runmode(InputAction.CallbackContext ctx)
     {
+
+           if (!ctx.performed)
+                return;
         if (!Run)
         {
             currentSpeed = RunSpeed;
@@ -97,16 +112,20 @@ public class movement : MonoBehaviour
 
 
 
-    public void Jumping()
+    public void Jumping(InputAction.CallbackContext ctx)
     {
+        if(!ctx.performed)
+            return;
         if (isGrounded && !Sneak)
         {
             jump();
-            currentSpeed = jumpSpeed;
+            Debug.Log("Jumped");
+            //currentSpeed = jumpSpeed;
         }
 
-        else if (!isGrounded && !Sneak && jumpCount < 1)
+        else if (!isGrounded && !Sneak && jumpCount < 2)
         {
+            Debug.Log("Double Jumped");
             jump();
         }
     }
@@ -115,6 +134,11 @@ public class movement : MonoBehaviour
     {
         rb.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
         jumpCount++;
+    }
+
+    private void Slide()
+    { 
+        currentSpeed = (RunSpeed * 2);
     }
 
 }

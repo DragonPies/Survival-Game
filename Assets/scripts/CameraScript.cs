@@ -6,8 +6,8 @@ public class CameraScript : MonoBehaviour
     private float mouseInputY;
     [HideInInspector] public bool isCameraOn = true;
 
-    [HideInInspector] public Vector2 mouseDelta;
-    [SerializeField] private float SmoothTime;
+
+
 
     [SerializeField] private float Sensetivity;
 
@@ -22,7 +22,6 @@ public class CameraScript : MonoBehaviour
     {
         if (isCameraOn)
         {
-            mouseDelta = Vector2.Lerp(mouseDelta, new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")),Time.deltaTime * SmoothTime);
             mouseInputX += Input.GetAxis("Mouse X") * Sensetivity;
 
             mouseInputY += Input.GetAxis("Mouse Y") * -1 * Sensetivity;

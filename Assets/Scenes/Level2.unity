@@ -499,6 +499,11 @@ PrefabInstance:
       objectReference: {fileID: 1570611349}
     - target: {fileID: 5200343169354183595, guid: 578b747ee644df2409683acf2da9f0fe,
         type: 3}
+      propertyPath: throwForce
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200343169354183595, guid: 578b747ee644df2409683acf2da9f0fe,
+        type: 3}
       propertyPath: buttonlayer.m_Bits
       value: 256
       objectReference: {fileID: 0}
