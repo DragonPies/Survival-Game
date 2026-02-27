@@ -32,7 +32,9 @@ public class movement : MonoBehaviour
     [Header("Running")]
     [SerializeField] private bool Run = false;
     [SerializeField] private float RunSpeed;
-    [SerializeField] private bool isSliding;
+    [Space]
+    [Header("Sliding")]
+    public bool sliding;
 
 
 
@@ -45,22 +47,6 @@ public class movement : MonoBehaviour
     private void FixedUpdate()
     {
         Move();
-
-        if (!isSliding && Run && Sneak)
-        {
-            currentSpeed = (RunSpeed * 2);
-            Player.localScale = new Vector3(1f, 0.5f, 1f);
-            isSliding = true;
-        }
-
-            else if (isSliding && (!Run || !Sneak))
-            {
-                currentSpeed = Speed;
-                Player.localScale = new Vector3(1f, 1f, 1f);
-                isSliding = false;
-        }
-
-
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -91,6 +77,7 @@ public class movement : MonoBehaviour
         {
             currentSpeed = SneakSpeed;
             Player.localScale = new Vector3(1f, 0.5f, 1f);
+            rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
             Sneak = true;
         }
         else if (Sneak)
@@ -151,9 +138,15 @@ public class movement : MonoBehaviour
         jumpCount++;
     }
 
-    private void Slide()
-    { 
-        currentSpeed = (RunSpeed * 2);
+    public bool OnSlope()
+    {
+        //if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight * 0.5f + 0.3f))
+        //{
+      //      float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
+      //      return angle < maxSlopeAngle && angle != 0;
+      //  }
+
+        return false;
     }
 
 }
