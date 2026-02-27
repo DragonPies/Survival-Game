@@ -9,6 +9,7 @@ public class movement : MonoBehaviour
     private Rigidbody rb;
 
 
+
     [Header("Components Needed")]
     [SerializeField] private Transform Player;
     [SerializeField] private InputActionReference moveAction;
@@ -31,6 +32,7 @@ public class movement : MonoBehaviour
     [Header("Running")]
     [SerializeField] private bool Run = false;
     [SerializeField] private float RunSpeed;
+    [SerializeField] private bool isSliding;
 
 
 
@@ -43,11 +45,26 @@ public class movement : MonoBehaviour
     private void FixedUpdate()
     {
         Move();
+
+        if (!isSliding && Run && Sneak)
+        {
+            currentSpeed = (RunSpeed * 2);
+            Player.localScale = new Vector3(1f, 0.5f, 1f);
+            isSliding = true;
+        }
+
+            else if (isSliding && (!Run || !Sneak))
+            {
+                currentSpeed = Speed;
+                Player.localScale = new Vector3(1f, 1f, 1f);
+                isSliding = false;
+        }
+
+
     }
 
     private void OnCollisionEnter(Collision collision)
     {       
-            currentSpeed = Speed;
             isGrounded = true;
             jumpCount = 0;
     }
@@ -69,21 +86,12 @@ public class movement : MonoBehaviour
     {
         if (!ctx.performed)
             return;
-
+        Debug.Log("Sneak Toggled");
         if (!Sneak)
         {
-            if (Run)
-            {
-                Slide();
+            currentSpeed = SneakSpeed;
             Player.localScale = new Vector3(1f, 0.5f, 1f);
             Sneak = true;
-            }
-            else
-                    {
-                currentSpeed = SneakSpeed;
-                Player.localScale = new Vector3(1f, 0.5f, 1f);
-                Sneak = true;
-            }
         }
         else if (Sneak)
         {   
@@ -121,6 +129,13 @@ public class movement : MonoBehaviour
             jump();
             Debug.Log("Jumped");
             //currentSpeed = jumpSpeed;
+        }
+
+        else if (isGrounded && Sneak)
+        {
+            currentSpeed = Speed;
+            Player.localScale = new Vector3(1f, 1f, 1f);
+            Sneak = false;
         }
 
         else if (!isGrounded && !Sneak && jumpCount < 2)

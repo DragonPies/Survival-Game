@@ -214,7 +214,7 @@ MonoBehaviour:
       - m_Target: {fileID: 7857289612588752391}
         m_TargetAssemblyTypeName: movement, Assembly-CSharp
         m_MethodName: Sneakmode
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -230,7 +230,7 @@ MonoBehaviour:
       - m_Target: {fileID: 7857289612588752391}
         m_TargetAssemblyTypeName: movement, Assembly-CSharp
         m_MethodName: Jumping
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -254,7 +254,7 @@ MonoBehaviour:
       - m_Target: {fileID: 7857289612588752391}
         m_TargetAssemblyTypeName: movement, Assembly-CSharp
         m_MethodName: Runmode
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -306,19 +306,7 @@ MonoBehaviour:
     m_ActionId: 9caa3d8a-6b2f-4e8e-8bad-6ede561bd9be
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7857289612588752391}
-        m_TargetAssemblyTypeName: movement, Assembly-CSharp
-        m_MethodName: ThrowItem
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: 34aa7701-ff1e-4586-bb90-e001020cba19
     m_ActionName: 'Player/Throw[/Keyboard/e]'
   - m_PersistentCalls:
@@ -326,7 +314,7 @@ MonoBehaviour:
       - m_Target: {fileID: 5200343169354183595}
         m_TargetAssemblyTypeName: objPickup, Assembly-CSharp
         m_MethodName: PickUp
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
