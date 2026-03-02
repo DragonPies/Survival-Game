@@ -167,6 +167,8 @@ MonoBehaviour:
   isGrounded: 0
   Run: 0
   RunSpeed: 10
+  sliding: 0
+  maxSlideTime: 1
 --- !u!114 &7579475303358222657
 MonoBehaviour:
   m_ObjectHideFlags: 0

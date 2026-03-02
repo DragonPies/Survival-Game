@@ -5,8 +5,9 @@ using UnityEngine.Windows;
 
 public class movement : MonoBehaviour
 {
-    private Vector3 PlayerMovementInput;
+    public Vector3 PlayerMovementInput;
     private Rigidbody rb;
+    //public Vector3 direction;
 
 
 
@@ -24,7 +25,7 @@ public class movement : MonoBehaviour
     [SerializeField] private float SneakSpeed;
     [Space]
     [Header("Jumping")]
-    [SerializeField] private float jumpSpeed;
+    //[SerializeField] private float jumpSpeed;
     [SerializeField] private float JumpForce;
     [SerializeField] private float jumpCount;
     [SerializeField] private bool isGrounded;
@@ -35,6 +36,9 @@ public class movement : MonoBehaviour
     [Space]
     [Header("Sliding")]
     public bool sliding;
+    public float maxSlideTime;
+    private float slideTimer;
+
 
 
 
@@ -42,11 +46,13 @@ public class movement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         currentSpeed = Speed;
+        slideTimer = maxSlideTime;
     }
 
     private void FixedUpdate()
     {
         Move();
+
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -66,6 +72,7 @@ public class movement : MonoBehaviour
         movement.y = 0f; // Ensure movement is only on the horizontal plane
         PlayerMovementInput = movement;
         rb.MovePosition(transform.position + PlayerMovementInput * (Time.fixedDeltaTime * currentSpeed));
+        Slide();
     }
 
     public void Sneakmode(InputAction.CallbackContext ctx)
@@ -98,11 +105,12 @@ public class movement : MonoBehaviour
             currentSpeed = RunSpeed;
             Run = true;
         }
-        else if (Run)
+        else
         {
             currentSpeed = Speed;
             Run = false;
         }
+
     }
 
 
@@ -138,15 +146,32 @@ public class movement : MonoBehaviour
         jumpCount++;
     }
 
-    public bool OnSlope()
-    {
-        //if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight * 0.5f + 0.3f))
-        //{
-      //      float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
-      //      return angle < maxSlopeAngle && angle != 0;
-      //  }
 
-        return false;
+    private void Slide()
+    {
+        if (Run && Sneak)
+        { 
+            sliding = true;
+            if (sliding && slideTimer > 0f)
+            {
+                Player.localScale = new Vector3(1f, 0.25f, 1f);
+                rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+                currentSpeed = (RunSpeed * 1.5f);
+                slideTimer -= Time.deltaTime;
+            }
+            else
+            {
+                sliding = false;
+                currentSpeed = Speed;
+                Player.localScale = new Vector3(1f, 1f, 1f);
+                slideTimer = maxSlideTime;
+                Run = false;
+                Sneak = false;
+            }
+
+        }
+
     }
+
 
 }
