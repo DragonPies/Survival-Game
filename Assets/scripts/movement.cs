@@ -52,6 +52,7 @@ public class movement : MonoBehaviour
     private void FixedUpdate()
     {
         Move();
+        Slide();
 
     }
 
@@ -68,11 +69,17 @@ public class movement : MonoBehaviour
 
     private void Move()
     {
-        Vector3 movement = Camera.forward * moveAction.action.ReadValue<Vector2>().y + Camera.right * moveAction.action.ReadValue<Vector2>().x;
-        movement.y = 0f; // Ensure movement is only on the horizontal plane
-        PlayerMovementInput = movement;
-        rb.MovePosition(transform.position + PlayerMovementInput * (Time.fixedDeltaTime * currentSpeed));
-        Slide();
+        if (!sliding)
+        {
+            Vector3 movement = Camera.forward * moveAction.action.ReadValue<Vector2>().y + Camera.right * moveAction.action.ReadValue<Vector2>().x;
+            movement.y = 0f; // Ensure movement is only on the horizontal plane
+            PlayerMovementInput = movement;
+            rb.MovePosition(transform.position + PlayerMovementInput * (Time.fixedDeltaTime * currentSpeed));
+        }
+        else
+        {
+            transform.Translate(currentSpeed * Time.deltaTime * Camera.forward);
+        }
     }
 
     public void Sneakmode(InputAction.CallbackContext ctx)

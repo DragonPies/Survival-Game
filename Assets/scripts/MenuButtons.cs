@@ -40,4 +40,10 @@ public class MenuButtons : MonoBehaviour
         Time.timeScale = 1f;
         SceneManager.LoadScene("Level1");
     }
+
+    public void Level2()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("Level2");
+    }
 }
