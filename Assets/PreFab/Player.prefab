@@ -154,6 +154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb8dc619b79f82a43aa50ef314b2b682, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerMovementInput: {x: 0, y: 0, z: 0}
   Player: {fileID: 4425332752932258584}
   moveAction: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100,
     type: 3}
@@ -161,7 +162,6 @@ MonoBehaviour:
   Speed: 5
   Sneak: 0
   SneakSpeed: 2.5
-  jumpSpeed: 3
   JumpForce: 10
   jumpCount: 0
   isGrounded: 0
@@ -208,7 +208,19 @@ MonoBehaviour:
     m_ActionId: 6c2ab1b8-8984-453a-af3d-a3c78ae1679a
     m_ActionName: 'Player/Attack[/Mouse/leftButton,/Keyboard/enter]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5200343169354183595}
+        m_TargetAssemblyTypeName: objPickup, Assembly-CSharp
+        m_MethodName: Button
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 852140f2-7766-474d-8707-702459ba45f3
     m_ActionName: 'Player/Interact[/Keyboard/e]'
   - m_PersistentCalls:
@@ -356,10 +368,6 @@ MonoBehaviour:
   throwForce: 20
   crosshair1: {fileID: 0}
   crosshair2: {fileID: 0}
-  gate: {fileID: 0}
-  button: {fileID: 0}
-  mat1: {fileID: 0}
-  mat2: {fileID: 0}
 --- !u!1 &3814296831333394011
 GameObject:
   m_ObjectHideFlags: 0

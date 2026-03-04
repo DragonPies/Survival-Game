@@ -16,12 +16,7 @@ public class objPickup : MonoBehaviour
     public GameObject crosshair2;
 
     private Grabable currentlyGrabbed;
-
-    [Header("Gate Button Stuff")]
-    [SerializeField] private GameObject gate, button;
-    [SerializeField] private Material mat1, mat2;
-    private bool isOpen;
-    
+    [SerializeField] private Gate gate;
 
 
     private void Update()
@@ -76,7 +71,7 @@ public class objPickup : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmos()
+    /*private void OnDrawGizmos()
     {
         Vector3 localx = grabPoint.GetComponent<GrabPoint>().mouseDelta.x * camtrans.right;
         Vector3 localy = grabPoint.GetComponent<GrabPoint>().mouseDelta.y * Vector3.up;
@@ -86,24 +81,31 @@ public class objPickup : MonoBehaviour
         {
             Gizmos.DrawLine(currentlyGrabbed.transform.position, currentlyGrabbed.transform.position + velocity);
         }
-    }
+    }*/
 
     public void Button(InputAction.CallbackContext ctx)
     {
         float pickupDistance = 3f;
         if (!ctx.performed)
             return;
-            if (Physics.Raycast(camtrans.position, camtrans.forward, out RaycastHit raycasthit, pickupDistance, buttonlayer) && !isOpen)
+            if (Physics.Raycast(camtrans.position, camtrans.forward, out RaycastHit raycasthit, pickupDistance, buttonlayer))
             {
-                gate.SetActive(false);
-                button.GetComponent<Renderer>().material = mat2;
-                isOpen = true;
+            Debug.Log("Pressed button");
+                if (raycasthit.transform.TryGetComponent(out gate))
+                {
+                    Debug.Log("button script found");
+                    if (!gate.buttonPressed)
+                    {
+                        gate.buttonPressed = true;
+                        gate = null;
+                }
+                    else if (gate.buttonPressed)
+                    {
+                        gate.buttonPressed = false;
+                        gate = null;
+                }
+                }
             }
-            else
-            {
-                gate.SetActive(true);
-                button.GetComponent<Renderer>().material = mat1;
-                isOpen = false;
-            }
+           
     }
 }
