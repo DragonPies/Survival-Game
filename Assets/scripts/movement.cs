@@ -57,14 +57,18 @@ public class movement : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision collision)
-    {       
+    {
+        if (collision.gameObject.CompareTag("land"))
+        {
             isGrounded = true;
             jumpCount = 0;
+        }
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        isGrounded = false;
+        if (collision.gameObject.CompareTag("land"))
+            isGrounded = false;
     }
 
     private void Move()

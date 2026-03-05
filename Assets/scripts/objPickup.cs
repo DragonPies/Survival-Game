@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class objPickup : MonoBehaviour
 {
 
-    [SerializeField] private Transform camtrans, grabPointTransform, grabPoint;
+    [SerializeField] private Transform camtrans, grabPoint;
     [SerializeField] private LayerMask pickUpLayer;
     [SerializeField] private LayerMask buttonlayer;
 
@@ -52,7 +52,7 @@ public class objPickup : MonoBehaviour
                 Debug.Log("Hit: " + raycasthit.collider.gameObject.name);
                 if (raycasthit.transform.TryGetComponent(out currentlyGrabbed))
                 {
-                    currentlyGrabbed.Grab(grabPointTransform);
+                    currentlyGrabbed.Grab(grabPoint);
                     Debug.Log("Grabbed: " + raycasthit.collider.gameObject.name);
                 }
             }

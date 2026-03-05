@@ -357,8 +357,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camtrans: {fileID: 4259545079582784525}
-  grabPointTransform: {fileID: 5663079815105365140}
-  grabPoint: {fileID: 0}
+  grabPoint: {fileID: 5663079815105365140}
   pickUpLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -368,6 +367,7 @@ MonoBehaviour:
   throwForce: 20
   crosshair1: {fileID: 0}
   crosshair2: {fileID: 0}
+  gate: {fileID: 0}
 --- !u!1 &3814296831333394011
 GameObject:
   m_ObjectHideFlags: 0
